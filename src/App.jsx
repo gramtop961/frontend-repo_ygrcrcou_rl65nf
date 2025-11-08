@@ -3,7 +3,6 @@ import Topbar from './components/Topbar';
 import Sidebar from './components/Sidebar';
 import KPIs from './components/KPIs';
 import InventoryTable from './components/InventoryTable';
-import RecentActivity from './components/RecentActivity';
 
 function App() {
   const [role, setRole] = useState('Admin');
@@ -18,11 +17,10 @@ function App() {
           {active === 'dashboard' && (
             <div className="space-y-4">
               <KPIs role={role} />
-              <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-                <div className="xl:col-span-2">
-                  <InventoryTable role={role} />
-                </div>
-                <RecentActivity />
+              <div>
+                <h2 className="text-xl font-semibold mb-2">Quick Inventory</h2>
+                <p className="text-sm text-gray-600 mb-4">Recently added and low-stock medicines.</p>
+                <InventoryTable role={role} />
               </div>
             </div>
           )}
