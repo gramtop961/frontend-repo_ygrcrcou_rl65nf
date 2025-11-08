@@ -1,28 +1,66 @@
-import { useState } from 'react'
+import React, { useState } from 'react';
+import Topbar from './components/Topbar';
+import Sidebar from './components/Sidebar';
+import KPIs from './components/KPIs';
+import InventoryTable from './components/InventoryTable';
+import RecentActivity from './components/RecentActivity';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [role, setRole] = useState('Admin');
+  const [active, setActive] = useState('dashboard');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-sky-50 to-purple-50 text-gray-900">
+      <Topbar role={role} onChangeRole={setRole} />
+      <div className="flex h-[calc(100vh-4rem)]">
+        <Sidebar active={active} onChange={setActive} />
+        <main className="flex-1 p-4 overflow-y-auto">
+          {active === 'dashboard' && (
+            <div className="space-y-4">
+              <KPIs role={role} />
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+                <div className="xl:col-span-2">
+                  <InventoryTable role={role} />
+                </div>
+                <RecentActivity />
+              </div>
+            </div>
+          )}
+
+          {active === 'inventory' && (
+            <div className="space-y-4">
+              <div>
+                <h2 className="text-xl font-semibold mb-2">Inventory</h2>
+                <p className="text-sm text-gray-600 mb-4">Search, filter and manage all medicines.</p>
+                <InventoryTable role={role} />
+              </div>
+            </div>
+          )}
+
+          {active === 'orders' && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold">Prescriptions</h2>
+              <p className="text-sm text-gray-600">Processing queue will appear here.</p>
+            </div>
+          )}
+
+          {active === 'staff' && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold">Staff</h2>
+              <p className="text-sm text-gray-600">Manage users and permissions by role.</p>
+            </div>
+          )}
+
+          {active === 'settings' && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold">Settings</h2>
+              <p className="text-sm text-gray-600">Configure taxes, suppliers, billing and more.</p>
+            </div>
+          )}
+        </main>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
